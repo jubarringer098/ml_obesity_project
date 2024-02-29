@@ -1,8 +1,8 @@
 import os
 import sys
+sys.path.insert(0, '/Users/gracebarringer/ml_project_code/ml_obesity_project')
 from src.exception import CustomException
 from src.logger import logging
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
@@ -35,7 +35,7 @@ class DataIngestion:
 
 
             logging.info("Train test/val split initiated")
-            df_train, df_val = train_test_split(df_raw_train, size = 0.2, random_state = 42)
+            df_train, df_val = train_test_split(df_raw_train, test_size = 0.2, random_state = 42)
 
             df_train.to_csv(self.ingestion_config.train_data_path, index = False, header = True)
             df_val.to_csv(self.ingestion_config.val_data_path, index = False, header = True)
