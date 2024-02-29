@@ -20,7 +20,7 @@ The target variable, NObeyesdad, represents the obesity level classified into 7 
 **test.csv**: the test dataset includes all features and excludes the target variable. This data will be used to evaluate the accuracy of the model for the competition.
 
 
-### [Data Ingestions](https://github.com/xxgracexx098/ml_obesity_project/blob/main/src/components/data_ingestion.py)
+### [Data Ingestion](https://github.com/xxgracexx098/ml_obesity_project/blob/main/src/components/data_ingestion.py)
 ### [Exploratory Data Analysis](https://github.com/xxgracexx098/ml_obesity_project/blob/main/notebook/Exploratory%20Data%20Analysis%20%7C%20Obesity%20Risk.ipynb)
 #### [Charts file](https://github.com/xxgracexx098/ml_obesity_project/blob/main/notebook/Charts_for_EDA.ipynb)
 ### [Data Preprocessing](https://github.com/xxgracexx098/ml_obesity_project/blob/main/src/components/data_preprocessing.py)
