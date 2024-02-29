@@ -25,11 +25,10 @@ def save_object(file_path, obj):
 def evaluate_models(X_train, y_train, X_val, y_val, models, param):
     try:
         report = {}
-        
+        y_train = y_train.squeeze()
         for i in range(len(list(models))):
             model = list(models.values())[i]
             params = param[list(models.keys())[i]]
-
             grid_search = GridSearchCV(model, params, cv = 3)
             grid_search.fit(X_train, y_train)
             # model.fit(X_train, y_train)

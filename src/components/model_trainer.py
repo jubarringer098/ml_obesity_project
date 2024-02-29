@@ -22,15 +22,15 @@ class ModelTrainer:
         self.model_trainer_config = ModelTrainerConfig()
 
     
-    def inititiate_model_trainer(self, train_array, val_array):
+    def inititiate_model_trainer(self, df_train, df_val):
         try:
             logging.info("Splitting training and test input data")
 
             X_train, y_train, X_val, y_val = (
-                train_array[:,:-1],
-                train_array[:,-1],
-                val_array[:,:-1],
-                val_array[:,-1]
+                df_train.iloc[:,:-1],
+                df_train.iloc[:,-1:],
+                df_val.iloc[:,:-1],
+                df_val.iloc[:,-1:],
             )
 
             models = {
@@ -90,7 +90,7 @@ class ModelTrainer:
 
             val_accuracy_score = accuracy_score(y_val, predicted)
 
-            return val_accuracy_score
+            return val_accuracy_score, best_model_name, best_model
 
 
         except Exception as e:

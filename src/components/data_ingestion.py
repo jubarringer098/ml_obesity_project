@@ -12,6 +12,8 @@ from src.components.model_trainer import ModelTrainer
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+
 # from dataclasses import dataclass
 
 
@@ -62,9 +64,13 @@ if __name__ == "__main__":
     obj = DataIngestion()
     train_data, val_data = obj.initiate_data_ingestion()
 
-    data_transformation = DataTransformation()
-    train_arr, val_arr,_ = data_transformation.initiate_data_transformation(train_data, val_data)
-
+    train_df = pd.read_csv(train_data)
+    val_df = pd.read_csv(val_data)
+    # data_transformation_train_val = DataTransformation(train = True)
+    pipeline_train_val = Pipeline([('transform', DataTransformation(train=True))])
+    df_train = pipeline_train_val.fit_transform(train_df)
+    df_val = pipeline_train_val.fit_transform(val_df)
 
     model_trainer = ModelTrainer()
-    print(model_trainer.inititiate_model_trainer(train_arr, val_arr))
+    print(model_trainer.inititiate_model_trainer(df_train, df_val))
+
