@@ -1,13 +1,24 @@
 import os
 import sys
 sys.path.insert(0, '/Users/gracebarringer/ml_project_code/ml_obesity_project')
+
 from src.exception import CustomException
 from src.logger import logging
+from src.components.data_preprocessing import DataTransformation
+from src.components.data_preprocessing import DataTransformationConfig
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from dataclasses import dataclass
+# from dataclasses import dataclass
 
-@dataclass
+
+
+
+
+# @dataclass
 class DataIngestionConfig:
     raw_train_data_path: str=os.path.join('data', "raw_train.csv")
     test_data_path: str=os.path.join('data', "test.csv")
@@ -35,10 +46,10 @@ class DataIngestion:
 
 
             logging.info("Train test/val split initiated")
-            df_train, df_val = train_test_split(df_raw_train, test_size = 0.2, random_state = 42)
+            train_set, val_set = train_test_split(df_raw_train, test_size = 0.2, random_state = 42)
 
-            df_train.to_csv(self.ingestion_config.train_data_path, index = False, header = True)
-            df_val.to_csv(self.ingestion_config.val_data_path, index = False, header = True)
+            train_set.to_csv(self.ingestion_config.train_data_path, index = False, header = True)
+            val_set.to_csv(self.ingestion_config.val_data_path, index = False, header = True)
 
             logging.info("Ingestion of data complete")
 
@@ -49,4 +60,11 @@ class DataIngestion:
 
 if __name__ == "__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data, val_data = obj.initiate_data_ingestion()
+
+    data_transformation = DataTransformation()
+    train_arr, val_arr,_ = data_transformation.initiate_data_transformation(train_data, val_data)
+
+
+    model_trainer = ModelTrainer()
+    print(model_trainer.inititiate_model_trainer(train_arr, val_arr))
