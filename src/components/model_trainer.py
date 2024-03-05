@@ -22,9 +22,9 @@ class ModelTrainer:
         self.model_trainer_config = ModelTrainerConfig()
 
     
-    def inititiate_model_trainer(self, df_train, df_val):
+    def initiate_model_trainer(self, df_train, df_val):
         try:
-            logging.info("Splitting training and test input data")
+            logging.info("Splitting training and validation input data")
 
             X_train, y_train, X_val, y_val = (
                 df_train.iloc[:,:-1],
@@ -34,34 +34,35 @@ class ModelTrainer:
             )
 
             models = {
-                "Random Forest" : RandomForestClassifier(),
-                "XGBClassifier" : XGBClassifier(),
-                "CatBoostClassifier" : CatBoostClassifier(),
-                "AdaBoostClassifier" : AdaBoostClassifier()
+                "Random Forest" : RandomForestClassifier(random_state = 55),
+                "XGBClassifier" : XGBClassifier(random_state = 55),
+                "CatBoostClassifier" : CatBoostClassifier(random_state = 55),
+                "AdaBoostClassifier" : AdaBoostClassifier(random_state = 55)
             }
 
-
+            
             params = {
                 "Random Forest" : {
-                    'n_estimators': [100, 300, 500, 1000],
-                    'max_depth': [10, 20, 30, None],
+                    'n_estimators': [100, 300, 500],
+                    'max_depth': [7, 10, 20],
                     'min_samples_split': [2, 5, 10],
                     'min_samples_leaf': [1, 2, 4],
                 },
                 "XGBClassifier" : {
-                    'learning_rate':[.1,.01,.05,.001],
-                    'subsample':[0.6,0.7,0.8,0.9],
-                    'n_estimators': [100, 300, 500, 1000]
+                    'learning_rate':[.1,.01,.05],
+                    'max_depth': [5, 7, 10],
+                    'subsample':[0.7,0.8,0.9],
+                    'n_estimators': [100, 300, 500]
                 },
                 "CatBoostClassifier" : {
-                    'depth': [6,8,10],
+                    'depth': [4,6,8,10],
                     'learning_rate': [0.01, 0.05, 0.1],
-                    'iterations': [30, 50, 100]
+                    'iterations': [50, 100, 150]
                 },
                 "AdaBoostClassifier" : {
                     'learning_rate':[.1,.01,0.5,.001],
                     # 'loss':['linear','square','exponential'],
-                    'n_estimators': [8,16,32,64,128,256]
+                    'n_estimators': [25, 50, 100, 200]
                 }
             }
 
@@ -78,19 +79,26 @@ class ModelTrainer:
 
             # if best_model_score < 0.6:
             #     raise CustomException("No best model found")
-            
+
             logging.info("Best model on both training and validation datasets")
 
             save_object(
                 file_path = self.model_trainer_config.trained_model_file_path,
                 obj = best_model
             )
+            
+            logging.info("Best model saved to pkl file")
 
-            predicted = best_model.predict(X_val)
 
-            val_accuracy_score = accuracy_score(y_val, predicted)
+            train_predicted = best_model.predict(X_train)
 
-            return val_accuracy_score, best_model_name, best_model
+            train_accuracy_score = accuracy_score(y_train, train_predicted)
+
+            val_predicted = best_model.predict(X_val)
+
+            val_accuracy_score = accuracy_score(y_val, val_predicted)
+
+            return train_accuracy_score, val_accuracy_score, best_model
 
 
         except Exception as e:

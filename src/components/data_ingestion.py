@@ -4,29 +4,26 @@ sys.path.insert(0, '/Users/gracebarringer/ml_project_code/ml_obesity_project')
 
 from src.exception import CustomException
 from src.logger import logging
-from src.components.data_preprocessing import DataTransformation
-from src.components.data_preprocessing import DataTransformationConfig
-from src.components.model_trainer import ModelTrainerConfig
-from src.components.model_trainer import ModelTrainer
+# from src.components.data_preprocessing import DataTransformation
+# # from src.components.data_preprocessing import DataTransformationConfig
+# from src.components.model_trainer import ModelTrainerConfig
+# from src.components.model_trainer import ModelTrainer
 
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 
-# from dataclasses import dataclass
+from dataclasses import dataclass
 
 
 
-
-
-# @dataclass
+@dataclass
 class DataIngestionConfig:
     raw_train_data_path: str=os.path.join('data', "raw_train.csv")
     test_data_path: str=os.path.join('data', "test.csv")
     train_data_path: str=os.path.join('data', "train.csv")
     val_data_path: str=os.path.join('data', "val.csv")
-    # raw_data_path: str=os.path.join('data', "data.csv")
 
 class DataIngestion:
     def __init__(self):
@@ -44,7 +41,7 @@ class DataIngestion:
             os.makedirs(os.path.dirname(self.ingestion_config.test_data_path), exist_ok = True)
 
             df_raw_train.to_csv(self.ingestion_config.raw_train_data_path, index = False, header = True)
-            df_test.to_csv(self.ingestion_config.test_data_path)
+            df_test.to_csv(self.ingestion_config.test_data_path, index = False, header = True)
 
 
             logging.info("Train test/val split initiated")
@@ -55,22 +52,16 @@ class DataIngestion:
 
             logging.info("Ingestion of data complete")
 
-            return self.ingestion_config.train_data_path, self.ingestion_config.val_data_path
+            return self.ingestion_config.train_data_path, self.ingestion_config.val_data_path, self.ingestion_config.test_data_path
         except Exception as e:
             raise CustomException(e, sys)
 
 
-if __name__ == "__main__":
-    obj = DataIngestion()
-    train_data, val_data = obj.initiate_data_ingestion()
+# if __name__ == "__main__":
+#     obj = DataIngestion()
+#     train_data, val_data = obj.initiate_data_ingestion()
 
-    train_df = pd.read_csv(train_data)
-    val_df = pd.read_csv(val_data)
-    # data_transformation_train_val = DataTransformation(train = True)
-    pipeline_train_val = Pipeline([('transform', DataTransformation(train=True))])
-    df_train = pipeline_train_val.fit_transform(train_df)
-    df_val = pipeline_train_val.fit_transform(val_df)
 
-    model_trainer = ModelTrainer()
-    print(model_trainer.inititiate_model_trainer(df_train, df_val))
+#     model_trainer = ModelTrainer()
+#     print(model_trainer.inititiate_model_trainer(df_train, df_val))
 

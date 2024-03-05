@@ -8,6 +8,8 @@ import pandas as pd
 import dill
 from sklearn.metrics import accuracy_score, f1_score, confusion_matrix, r2_score, classification_report, roc_auc_score, roc_curve
 from sklearn.model_selection import GridSearchCV
+import pickle
+
 
 def save_object(file_path, obj):
     try:
@@ -36,7 +38,7 @@ def evaluate_models(X_train, y_train, X_val, y_val, models, param):
             model.set_params(**grid_search.best_params_)
             model.fit(X_train, y_train)
 
-            
+
             y_train_pred = model.predict(X_train)
 
             y_val_pred = model.predict(X_val)
@@ -56,6 +58,15 @@ def evaluate_models(X_train, y_train, X_val, y_val, models, param):
             report[list(models.keys())[i]] = val_model_accuracy
 
             return report
+
+    except Exception as e:
+        raise CustomException(e, sys)
+    
+
+def load_object(file_path):
+    try:
+        with open(file_path, "rb") as file_obj:
+            return pickle.load(file_obj)
 
     except Exception as e:
         raise CustomException(e, sys)
