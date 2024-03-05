@@ -9,6 +9,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, OrdinalEncoder
 from sklearn.base import BaseEstimator, TransformerMixin
 from scipy.stats import boxcox
+import joblib
 
 from src.exception import CustomException
 from src.logger import logging
@@ -69,6 +70,7 @@ class DataTransformation(BaseEstimator, TransformerMixin):
             # Apply label encoding to 'NObeyesdad' and adding missing category classes if in train mode
             if self.train == True:
                 X_transformed['NObeyesdad'] = self.le.transform(X_transformed['NObeyesdad'])
+                joblib.dump(self.le, 'label_encoder.pkl')
                 logging.info("Target encoding complete")
 
                 X_transformed['CALC_Always'] = 0
@@ -80,7 +82,6 @@ class DataTransformation(BaseEstimator, TransformerMixin):
             else:
                 # Sorting dataset
                 X_transformed = X_transformed.sort_index(axis =1)
-        
             logging.info("Data transformations complete")
 
             return X_transformed

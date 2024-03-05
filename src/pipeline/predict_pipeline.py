@@ -8,6 +8,7 @@ from src.components.data_ingestion import DataIngestion
 from src.components.data_preprocessing import DataTransformation
 from src.exception import CustomException
 from src.utils import load_object
+import joblib
 
 
 
@@ -31,13 +32,19 @@ try:
     model = load_object(file_path = model_path)
     preds = model.predict(df_test_trans)
 
+    # Getting label encoder for inverse encoding 
+    le = joblib.load('label_encoder.pkl')
+    preds_decode = le.inverse_transform(preds)
+    
     # # Building final prediction file 
     id_list = df_test['id'].tolist()
     num_list = []
-    for i in range(len(preds)):
-        num_list.append(preds[i])
+    for i in range(len(preds_decode)):
+        num_list.append(preds_decode[i])
 
     df_preds = pd.DataFrame({"id":id_list, "NObeyesdad": num_list})
+
+
     df_preds.to_csv("/Users/gracebarringer/Machine Learning Projects/Kaggle/Obesity Risk - Multi-Class/preds.csv")
 
 
