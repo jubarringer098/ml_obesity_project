@@ -22,7 +22,7 @@ The target variable, NObeyesdad, represents the obesity level classified into 7 
 
 ### [Data Ingestion](https://github.com/xxgracexx098/ml_obesity_project/blob/main/src/components/data_ingestion.py)
 ### [Exploratory Data Analysis](https://github.com/xxgracexx098/ml_obesity_project/blob/main/notebook/Exploratory%20Data%20Analysis%20%7C%20Obesity%20Risk.ipynb)
-#### [Charts file](https://github.com/xxgracexx098/ml_obesity_project/blob/main/notebook/Charts_for_EDA.ipynb)
+##### [Charts file](https://github.com/xxgracexx098/ml_obesity_project/blob/main/notebook/Charts_for_EDA.ipynb)
 ### [Data Preprocessing](https://github.com/xxgracexx098/ml_obesity_project/blob/main/src/components/data_preprocessing.py)
 ### [Model Selection](https://github.com/xxgracexx098/ml_obesity_project/blob/main/src/components/model_trainer.py)
 ### [Training Pipeline](https://github.com/xxgracexx098/ml_obesity_project/blob/main/src/pipeline/train_pipeline.py)
